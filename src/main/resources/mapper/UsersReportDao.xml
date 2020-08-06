@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rhb.shortviedo.dao.UsersReportDao">
+
+    <resultMap type="com.rhb.shortviedo.entity.UsersReport" id="UsersReportMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="dealUserId" column="deal_user_id" jdbcType="VARCHAR"/>
+        <result property="dealVideoId" column="deal_video_id" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="userid" column="userid" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UsersReportMap">
+        select
+          id, deal_user_id, deal_video_id, title, content, userid, create_date
+        from shortviedo.users_report
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UsersReportMap">
+        select
+          id, deal_user_id, deal_video_id, title, content, userid, create_date
+        from shortviedo.users_report
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UsersReportMap">
+        select
+          id, deal_user_id, deal_video_id, title, content, userid, create_date
+        from shortviedo.users_report
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="dealUserId != null and dealUserId != ''">
+                and deal_user_id = #{dealUserId}
+            </if>
+            <if test="dealVideoId != null and dealVideoId != ''">
+                and deal_video_id = #{dealVideoId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="userid != null and userid != ''">
+                and userid = #{userid}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into shortviedo.users_report(deal_user_id, deal_video_id, title, content, userid, create_date)
+        values (#{dealUserId}, #{dealVideoId}, #{title}, #{content}, #{userid}, #{createDate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update shortviedo.users_report
+        <set>
+            <if test="dealUserId != null and dealUserId != ''">
+                deal_user_id = #{dealUserId},
+            </if>
+            <if test="dealVideoId != null and dealVideoId != ''">
+                deal_video_id = #{dealVideoId},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="userid != null and userid != ''">
+                userid = #{userid},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from shortviedo.users_report where id = #{id}
+    </delete>
+
+</mapper>
